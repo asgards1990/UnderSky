@@ -8,7 +8,7 @@
 Player::Player(Point2d c, double m, double height, double width, int hp) :
 	Character(c,m,height,width,hp), onGround(false), leftKey(sf::Keyboard::Left), rightKey(sf::Keyboard::Right), jumpKey(sf::Keyboard::Up)
 {
-	arial.loadFromFile("arial.ttf");
+	arial.loadFromFile("resources/fonts/arial.ttf");
 }
 
 Player::~Player(void)

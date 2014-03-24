@@ -99,27 +99,28 @@ void Game::LoadTestRoom(){
 	Character* fiend1 = new Spearman (Point2d(-2.0,3.0),true,&room);
 	room.fiends.push_back(fiend1);
 	std::vector<int> ceilingTileIndices (55,1), ceilingTileRotations (55,0);
-	Still* ceiling = new Still (Point2d(-5.0,-1.0), Point2d(50.0,0.0),"TileSet.png",100,100,ceilingTileIndices,ceilingTileRotations,55,1);
+	Still* ceiling = new Still (Point2d(-5.0,-1.0), Point2d(50.0,0.0),"resources/images/TileSet.png",100,100,ceilingTileIndices,ceilingTileRotations,55,1);
 	room.scenery.push_back(ceiling);
 	std::vector<int> ground1TileIndices (30,0), ground1TileRotations (30,0);
-	Still* ground1 = new Still (Point2d(-5.0,5.0), Point2d(25.0,6.0),"TileSet.png",100,100,ground1TileIndices,ground1TileRotations,30,1);
+	Still* ground1 = new Still (Point2d(-5.0,5.0), Point2d(25.0,6.0),"resources/images/TileSet.png",100,100,ground1TileIndices,ground1TileRotations,30,1);
 	room.scenery.push_back(ground1);
 	std::vector<int> ground2TileIndices (23,0), ground2TileRotations (23,0);
-	Still* ground2 = new Still (Point2d(27.0,5.0), Point2d(50.0,6.0),"TileSet.png",100,100,ground2TileIndices,ground2TileRotations,23,1);
+	Still* ground2 = new Still (Point2d(27.0,5.0), Point2d(50.0,6.0),"resources/images/TileSet.png",100,100,ground2TileIndices,ground2TileRotations,23,1);
 	room.scenery.push_back(ground2);
 	std::vector<int> leftTileIndices (5,1), leftTileRotations (5,0);
-	Still* leftWall = new Still (Point2d(-6.0,0.0), Point2d(-5.0,5.0),"TileSet.png",100,100,leftTileIndices,leftTileRotations,1,5);
+	Still* leftWall = new Still (Point2d(-6.0,0.0), Point2d(-5.0,5.0),"resources/images/TileSet.png",100,100,leftTileIndices,leftTileRotations,1,5);
 	room.scenery.push_back(leftWall);
 	std::vector<int> rightTileIndices (5,1), rightTileRotations (5,0);
-	Still* rightWall = new Still (Point2d(50.0,0.0), Point2d(51.0,5.0),"TileSet.png",100,100,rightTileIndices,rightTileRotations,1,5);
+	Still* rightWall = new Still (Point2d(50.0,0.0), Point2d(51.0,5.0),"resources/images/TileSet.png",100,100,rightTileIndices,rightTileRotations,1,5);
 	room.scenery.push_back(rightWall);
 	room.boundingBox.include(Point2d(-10.0,-10.0));
 	room.boundingBox.include(Point2d(100.0,100.0));
 }
 
 void Game::launch(){
-	currentGameState=TITLE_SCREEN;
+	currentGameState=GAME_RUNNING;
 	endOfFrame();
+	LoadTestRoom();
 	while(mainWindow.isOpen()){
 		sf::Event event;
         while(mainWindow.pollEvent(event)){

@@ -42,7 +42,7 @@ private :
 	int windowWidth, windowHeight;
 	int viewWidth, viewHeight;
 	sf::RenderWindow mainWindow;
-	GameState currentGameState;
+	int currentGameState;
 
 	sf::Font titleFont;
 };

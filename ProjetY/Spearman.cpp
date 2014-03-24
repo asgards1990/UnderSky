@@ -17,7 +17,7 @@ Spearman::Spearman(Point2d c, bool right, Room* r) :
 	Hitbox* spearBox = new SquareHitbox(Point2d(spearC.x-0.5*0.39,spearC.y-0.5*0.19),Point2d(spearC.x+0.5*0.39,spearC.y+0.5*0.19));
 	spearBox->setAttackID(0);
 	attackboxes.push_back(spearBox);
-	texture.loadFromFile("spearman.png");
+	texture.loadFromFile("resources/images/spearman.png");
 	sprite.setOrigin(sf::Vector2f(66,247));//pixel coordinates of the center of gravity of the spearman
 	sprite.setPosition(c.x,c.y);
 	sprite.setTexture(texture);

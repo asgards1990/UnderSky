@@ -8,7 +8,7 @@
 YoungLady::YoungLady(Point2d c) :
 	Player(c,1.0,1.5,0.520,10), shootCoolDown(0), facingRight(true), walkingFrames(0), spriteIndex(4)
 {
-	texture.loadFromFile("Lady.png");
+	texture.loadFromFile("resources/images/Lady.png");
 	sprite.setOrigin(30,77);//pixel coordinates of the center of gravity of the young lady
 	sprite.setPosition(sf::Vector2f(c.x,c.y));
 	sprite.setTexture(texture);
