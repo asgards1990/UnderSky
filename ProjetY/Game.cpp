@@ -3,6 +3,7 @@
 #include "Still.h"
 #include "YoungLady.h"
 #include "Spearman.h"
+#include "Peon.h"
 
 const int Game::invulnerability_frames=5;
 const double Game::friction = 2.0;
@@ -96,7 +97,8 @@ void Game::draw(){
 void Game::LoadTestRoom(){
 	Player* player = new YoungLady (Point2d(0.0,3.0));
 	room.player=player;
-	Character* fiend1 = new Spearman (Point2d(-2.0,3.0),true,&room);
+	Character* fiend1 = new Peon (Point2d(-2.0,3.0),true,&room);
+	//Character* fiend1 = new Spearman (Point2d(-2.0,3.0),true,&room);
 	room.fiends.push_back(fiend1);
 	std::vector<int> ceilingTileIndices (55,1), ceilingTileRotations (55,0);
 	Still* ceiling = new Still (Point2d(-5.0,-1.0), Point2d(50.0,0.0),"resources/images/TileSet.png",100,100,ceilingTileIndices,ceilingTileRotations,55,1);

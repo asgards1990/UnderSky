@@ -72,6 +72,9 @@
     <ClInclude Include="Status.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Peon.h">
+      <Filter>Fichiers d%27en-tête\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -112,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="SquareHitbox.cpp">
       <Filter>Fichiers sources\Hitboxes</Filter>
+    </ClCompile>
+    <ClCompile Include="Peon.cpp">
+      <Filter>Fichiers sources\Objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
