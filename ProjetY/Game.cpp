@@ -15,6 +15,7 @@ double Game::timeStep = 0.0;
 Game::Game() :
 	fps(60), windowWidth(800), windowHeight(800), viewWidth(10), viewHeight(10), mainWindow(sf::VideoMode(800, 800), "ProjetY"), view (sf::FloatRect(0,0,10,10)), gamePaused(false)
 {
+	titleFont.loadFromFile("resources/fonts/arial.ttf");
 	mainWindow.setFramerateLimit(fps);
 	mainWindow.setView(view);
 }
@@ -77,19 +78,52 @@ void Game::resolveCollisions(){
 
 void Game::draw(){
 	mainWindow.clear(sf::Color(112,112,255,555));
-	view.setCenter(room.player->getGravCenter().x,room.player->getGravCenter().y);
-	mainWindow.setView(view);
-	for(unsigned int i=0;i<room.fiends.size();i++){
-		room.fiends[i]->draw(&mainWindow);
+	if(currentGameState==GAME_RUNNING){
+		view.setCenter(room.player->getGravCenter().x,room.player->getGravCenter().y);
+		mainWindow.setView(view);
+		for(unsigned int i=0;i<room.fiends.size();i++){
+			room.fiends[i]->draw(&mainWindow);
+		}
+		for(unsigned int i=0;i<room.projectiles.size();i++){
+			room.projectiles[i]->draw(&mainWindow);
+		}
+		for(unsigned int i=0;i<room.scenery.size();i++){
+			room.scenery[i]->draw(&mainWindow);
+		}
+		room.player->draw(&mainWindow);
+		room.player->drawStats(&mainWindow);
+	}else if(currentGameState==TITLE_SCREEN){
+		sf::Text titleText;
+		titleText.setString("Undersky");
+		titleText.setPosition(300.0f,100.0f);
+		titleText.setFont(titleFont);
+		titleText.setColor(sf::Color::White);
+		titleText.setCharacterSize(100);
+		sf::Text newGameText;
+		newGameText.setString("New Game");
+		newGameText.setPosition(400.0f,400.0f);
+		newGameText.setFont(titleFont);
+		newGameText.setColor(sf::Color::White);
+		newGameText.setCharacterSize(40);
+		sf::Text loadGameText;
+		loadGameText.setString("Load Game");
+		loadGameText.setPosition(395.0f,500.0f);
+		loadGameText.setFont(titleFont);
+		loadGameText.setColor(sf::Color::White);
+		loadGameText.setCharacterSize(40);
+		sf::Text optionText;
+		optionText.setString("Options");
+		optionText.setPosition(430.0f,600.0f);
+		optionText.setFont(titleFont);
+		optionText.setColor(sf::Color::White);
+		optionText.setCharacterSize(40);
+		sf::View titleView (sf::FloatRect(0.0f,0.0f,1000.0f,1000.0f));
+		mainWindow.setView(titleView);
+		mainWindow.draw(titleText);
+		mainWindow.draw(newGameText);
+		mainWindow.draw(loadGameText);
+		mainWindow.draw(optionText);
 	}
-	for(unsigned int i=0;i<room.projectiles.size();i++){
-		room.projectiles[i]->draw(&mainWindow);
-	}
-	for(unsigned int i=0;i<room.scenery.size();i++){
-		room.scenery[i]->draw(&mainWindow);
-	}
-	room.player->draw(&mainWindow);
-	room.player->drawStats(&mainWindow);
 	mainWindow.display();
 }
 
@@ -118,9 +152,8 @@ void Game::LoadTestRoom(){
 }
 
 void Game::launch(){
-	currentGameState=GAME_RUNNING;
+	currentGameState=TITLE_SCREEN;
 	endOfFrame();
-	LoadTestRoom();
 	while(mainWindow.isOpen()){
 		sf::Event event;
         while(mainWindow.pollEvent(event)){
@@ -138,19 +171,23 @@ void Game::launch(){
 		}
 		endOfFrame();
 		if(currentGameState==TITLE_SCREEN){
-			if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-				SquareHitbox newGameButton (Point2d(3.0,8.0),Point2d(7.0,9.0));
-				SquareHitbox loadButton (Point2d(3.0,6.0),Point2d(7.0,7.0));
-				SquareHitbox optionsButton (Point2d(3.0,4.0),Point2d(7.0,5.0));
-				sf::Vector2f mousePosition = mainWindow.mapPixelToCoords(sf::Mouse::getPosition(mainWindow));
-				Point2d cursor (mousePosition.x,mousePosition.y);
-				if(newGameButton.isInside(cursor)){
+			SquareHitbox newGameButton (Point2d(400.0,400.0),Point2d(600.0,450.0));
+			SquareHitbox loadButton (Point2d(400.0,500.0),Point2d(600.0,550.0));
+			SquareHitbox optionsButton (Point2d(400.0,600.0),Point2d(600.0,650.0));
+			sf::Vector2f mousePosition = mainWindow.mapPixelToCoords(sf::Mouse::getPosition(mainWindow));
+			Point2d cursor (mousePosition.x,mousePosition.y);
+			if(newGameButton.isInside(cursor)){
+				newGameButton.draw(&mainWindow,sf::Color(0,0,255,255));
+				if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 					LoadTestRoom();
-				}else if(loadButton.isInside(cursor)){
-					//TODO
-				}else if(optionsButton.isInside(cursor)){
-					//TODO
+					currentGameState=GAME_RUNNING;
 				}
+			}else if(loadButton.isInside(cursor)){
+				loadButton.draw(&mainWindow,sf::Color(0,0,255,100));
+				//TODO
+			}else if(optionsButton.isInside(cursor)){
+				optionsButton.draw(&mainWindow,sf::Color(0,0,255,100));
+				//TODO
 			}
 		}else if(currentGameState==GAME_RUNNING){
 			if(!gamePaused){
