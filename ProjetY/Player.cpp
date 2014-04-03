@@ -65,9 +65,6 @@ void Player::drawStats(sf::RenderWindow *window)const{
 	text.setPosition(10.0f,10.0f);
 	text.setFont(arial);
 	text.setColor(sf::Color::White);
-	text.setCharacterSize(20);
-	sf::View currentView = window->getView();//gets the current view
-	window->setView(window->getDefaultView());//replaces it with the default view such that the text always keeps the same position
+	text.setCharacterSize(40);
 	window->draw(text);
-	window->setView(currentView);//put the older view back in place
 }

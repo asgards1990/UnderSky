@@ -6,7 +6,7 @@
 
 #define PI 3.14159265359
 
-class Camera;
+class Button;
 
 class Game{
 public :
@@ -30,6 +30,8 @@ public :
 private :
 	void LoadRoom();
 	void LoadTestRoom();
+
+	std::vector<Button*> buttons;
 
 	Room room;
 

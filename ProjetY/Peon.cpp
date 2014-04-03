@@ -30,7 +30,7 @@ void Peon::resolveAttack(int attackID, Character* fiend, int hitboxIndex, Point2
 }
 
 void Peon::damage(int deltaHP, int type, int hitboxIndex){
-	if((invincible<1)&&(hitboxIndex==1)){
+	if(invincible<1){
 		damageNoTrigger(deltaHP,type);
 		invincible= -1;
 	}

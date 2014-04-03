@@ -4,6 +4,7 @@
 #include "YoungLady.h"
 #include "Spearman.h"
 #include "Peon.h"
+#include "BasicButton.h"
 
 const int Game::invulnerability_frames=5;
 const double Game::friction = 2.0;
@@ -92,38 +93,20 @@ void Game::draw(){
 			room.scenery[i]->draw(&mainWindow);
 		}
 		room.player->draw(&mainWindow);
+	}
+	//elements at fixed screen location
+	sf::View defaultView (sf::FloatRect(0.0f,0.0f,1000.0f,1000.0f));
+	mainWindow.setView(defaultView);
+	for(unsigned int i=0;i<buttons.size();i++)
+		buttons[i]->draw(&mainWindow);
+	if(currentGameState==GAME_RUNNING){
 		room.player->drawStats(&mainWindow);
+		mainWindow.setView(view);
 	}else if(currentGameState==TITLE_SCREEN){
-		sf::Text titleText;
-		titleText.setString("Undersky");
-		titleText.setPosition(300.0f,100.0f);
-		titleText.setFont(titleFont);
+		sf::Text titleText ("Undersky",titleFont,100);
 		titleText.setColor(sf::Color::White);
-		titleText.setCharacterSize(100);
-		sf::Text newGameText;
-		newGameText.setString("New Game");
-		newGameText.setPosition(400.0f,400.0f);
-		newGameText.setFont(titleFont);
-		newGameText.setColor(sf::Color::White);
-		newGameText.setCharacterSize(40);
-		sf::Text loadGameText;
-		loadGameText.setString("Load Game");
-		loadGameText.setPosition(395.0f,500.0f);
-		loadGameText.setFont(titleFont);
-		loadGameText.setColor(sf::Color::White);
-		loadGameText.setCharacterSize(40);
-		sf::Text optionText;
-		optionText.setString("Options");
-		optionText.setPosition(430.0f,600.0f);
-		optionText.setFont(titleFont);
-		optionText.setColor(sf::Color::White);
-		optionText.setCharacterSize(40);
-		sf::View titleView (sf::FloatRect(0.0f,0.0f,1000.0f,1000.0f));
-		mainWindow.setView(titleView);
+		titleText.setPosition(300.0,100.0);
 		mainWindow.draw(titleText);
-		mainWindow.draw(newGameText);
-		mainWindow.draw(loadGameText);
-		mainWindow.draw(optionText);
 	}
 	mainWindow.display();
 }
@@ -155,6 +138,9 @@ void Game::LoadTestRoom(){
 
 void Game::launch(){
 	currentGameState=TITLE_SCREEN;
+	buttons.push_back(new BasicButton("New Game",titleFont,sf::Color::White,sf::Color(0,0,255,100),40,Point2d(400.0,400.0)));
+	buttons.push_back(new BasicButton("Load Game",titleFont,sf::Color::White,sf::Color(0,0,255,100),40,Point2d(395.0,500.0)));
+	buttons.push_back(new BasicButton("Options",titleFont,sf::Color::White,sf::Color(0,0,255,100),40,Point2d(430.0,600.0)));
 	endOfFrame();
 	while(mainWindow.isOpen()){
 		sf::Event event;
@@ -173,22 +159,15 @@ void Game::launch(){
 		}
 		endOfFrame();
 		if(currentGameState==TITLE_SCREEN){
-			SquareHitbox newGameButton (Point2d(400.0,400.0),Point2d(600.0,450.0));
-			SquareHitbox loadButton (Point2d(400.0,500.0),Point2d(600.0,550.0));
-			SquareHitbox optionsButton (Point2d(400.0,600.0),Point2d(600.0,650.0));
-			sf::Vector2f mousePosition = mainWindow.mapPixelToCoords(sf::Mouse::getPosition(mainWindow));
-			Point2d cursor (mousePosition.x,mousePosition.y);
-			if(newGameButton.isInside(cursor)){
-				newGameButton.draw(&mainWindow,sf::Color(0,0,255,255));
-				if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-					LoadTestRoom();
-					currentGameState=GAME_RUNNING;
-				}
-			}else if(loadButton.isInside(cursor)){
-				loadButton.draw(&mainWindow,sf::Color(0,0,255,100));
+			if(buttons[0]->isLeftClickedOn(&mainWindow)){
+				LoadTestRoom();
+				currentGameState=GAME_RUNNING;
+				for(unsigned int i=0;i<buttons.size();i++)
+					delete buttons[i];
+				buttons.clear();
+			}else if(buttons[1]->isLeftClickedOn(&mainWindow)){
 				//TODO
-			}else if(optionsButton.isInside(cursor)){
-				optionsButton.draw(&mainWindow,sf::Color(0,0,255,100));
+			}else if(buttons[2]->isLeftClickedOn(&mainWindow)){
 				//TODO
 			}
 		}else if(currentGameState==GAME_RUNNING){

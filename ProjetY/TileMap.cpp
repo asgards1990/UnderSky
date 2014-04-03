@@ -25,6 +25,7 @@ bool TileMap::load(const char* texturePath, int tileHeight, int tileWidth, std::
 			}
 		}
 	}
+	return true;
 }
 
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const{
