@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "Still.h"
 
-Room::Room()
+Room::Room() : player(NULL)
 {
 
 }

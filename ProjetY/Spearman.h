@@ -6,7 +6,7 @@ class Room;
 
 class Spearman : public Character{
 public :
-	Spearman(Point2d c, bool right, Room* r);
+	Spearman(Point2d c = Point2d(), bool right = true, Room* r = NULL);
 	virtual ~Spearman(void);
 
 	virtual void resolveCollision(Still* other);
@@ -17,6 +17,7 @@ public :
 	virtual void displace(Point2d v);
 	virtual void draw(sf::RenderWindow* window)const;
 
+	bool loadFromFile(FILE* f, Room* r);
 protected :
 	bool idle;//true if the player has not been noticed yet
 	bool facingRight;

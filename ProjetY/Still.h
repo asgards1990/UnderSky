@@ -21,7 +21,7 @@ public:
 	origin : center of gravity in world coordinates
 	scale : scaling factor from pixel coordinates to world coordinates
 	*/
-	Still(std::vector<Hitbox*> &p_hitboxes, char* path = NULL, int tileHeight = 0, int tileWidth = 0, std::vector<int> &tileIndices = std::vector<int>(), std::vector<int> &tileRotations = std::vector<int>(), int width = 0, int height = 0, Point2d origin = Point2d(), double scale = 1.0);
+	Still(std::vector<Hitbox*> &p_hitboxes = std::vector<Hitbox*>(), char* path = NULL, int tileHeight = 0, int tileWidth = 0, std::vector<int> &tileIndices = std::vector<int>(), std::vector<int> &tileRotations = std::vector<int>(), int width = 0, int height = 0, Point2d origin = Point2d(), double scale = 1.0);
 	/*
 	bottomLeft : world coordinates of the bottom left corner of the still
 	topRight : world coordinates of the top right corner of the still
@@ -31,8 +31,9 @@ public:
 
 	virtual void draw(sf::RenderWindow* window)const;
 
+	bool loadFromFile(FILE* f, Room* r);
+
 protected:
-	char* texturePath;
 	TileMap sprite;
 };
 

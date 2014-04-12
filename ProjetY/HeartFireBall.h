@@ -6,12 +6,12 @@ class Player;
 
 class HeartFireBall : public Character{
 public :
-	HeartFireBall(Point2d center, Point2d speed, Player* player){};
+	HeartFireBall(Point2d center, Point2d speed, Player* hero);
 
-	virtual void resolveCollision(Character* other){};
-	virtual void resolveCollision(Still* other){};
-	virtual void resolveAttack(int attackID, Character* fiend, int hitboxIndex, Point2d d){}; 
-	virtual void simulate(){};
+	void resolveCollision(Character* other);
+	void resolveCollision(Still* other);
+	void resolveAttack(int attackID, Character* fiend, int hitboxIndex, Point2d d); 
+	void simulate();
 
 protected :
 	Player* player;

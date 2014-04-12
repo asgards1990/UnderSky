@@ -147,3 +147,38 @@ void Peon::draw(sf::RenderWindow* window)const{
 		Character::draw(window);
 	}
 }
+
+bool Peon::loadFromFile(FILE* f, Room* r){
+	if (f == NULL)
+		return false;
+
+	Point2d position;
+	
+	//have a temporary buffer used to read the file line by line...
+	char buffer[1000];
+	//this is where it happens.
+	while (!feof(f)){
+		//get a line from the file...
+		Game::readValidLine(buffer, f, sizeof(buffer));
+		char *line = Game::lTrim(buffer);
+
+		int lineType = Game::getTypeID(line);
+		switch (lineType) {
+			case POSITION:
+				if (sscanf(line, "%lf %lf", &position.x, &position.y) != 2)
+					return false;
+				break;
+			case FACING_RIGHT:
+				if (sscanf(line, "%d", &facingRight) != 1)
+					return false;
+				break;
+			case END:
+				room=r;
+				displace(position);
+				return true;
+			default:
+				return false;
+		}
+	}
+	return false;
+}

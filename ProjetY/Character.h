@@ -46,6 +46,16 @@ public:
 	unsigned int getAttackboxCount()const{return attackboxes.size();}
 	const Hitbox* getAttackbox(unsigned int i)const{return attackboxes[i];}
 	void addToForce(Point2d f){force+=f;}
+	/*
+	afflict the character with a status
+	*/
+	void afflict (Status* status);
+	/*
+	remove a status
+	*/
+	void cure(unsigned int i);
+	unsigned int getStatusCount()const{return statusInflicted.size();}
+	const Status* getStatus(int index)const {return statusInflicted[index];}
 	bool isDead(){return HP==0;}
 
 protected:

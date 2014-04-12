@@ -51,7 +51,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>SFML_STATIC;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SFML_STATIC;WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)SFML-2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -85,6 +85,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ConvexPolygon.h" />
+    <ClInclude Include="CurseOfFire.h" />
     <ClInclude Include="FireSpirit.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HeartFireBall.h" />
@@ -110,6 +111,7 @@
     <ClCompile Include="ConvexPolygon.cpp" />
     <ClCompile Include="FireSpirit.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="HeartFireBall.cpp" />
     <ClCompile Include="HeartOfFire.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object.cpp" />

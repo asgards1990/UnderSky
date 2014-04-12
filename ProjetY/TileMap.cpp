@@ -1,6 +1,6 @@
 #include "TileMap.h"
 
-bool TileMap::load(const char* texturePath, int tileHeight, int tileWidth, std::vector<int> &tileIndices, std::vector<int> &tileRotations, int width, int height){
+bool TileMap::load(const char* texturePath, int tileWidth, int tileHeight, std::vector<int> &tileIndices, std::vector<int> &tileRotations, int width, int height){
 	if (!m_tileset.loadFromFile(texturePath))
 		return false;
 

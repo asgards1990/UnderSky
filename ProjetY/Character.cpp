@@ -5,7 +5,7 @@
 #include "Still.h"
 #include "Status.h"
 
-Character::Character(void) : force(Point2d())
+Character::Character(void) : gravityCenter(Point2d()), mass(1.0),speed(Point2d()),force(Point2d()), maxHP(1), HP(1), invincible(0)
 {
 
 }
@@ -25,6 +25,8 @@ Character::~Character(void){
 			delete attackboxes[i];
 		}
 	}
+	for(unsigned int i=0;i<statusInflicted.size();i++)
+		delete statusInflicted[i];
 }
 
 void Character::resolveCollision(Character* other){
@@ -110,6 +112,16 @@ void Character::heal(int deltaHP){
 	}else{
 		HP+=deltaHP;
 	}
+}
+
+void Character::afflict(Status* status){
+	status->init(this);
+	statusInflicted.push_back(status);
+}
+
+void Character::cure(unsigned int i){
+	delete statusInflicted[i];
+	statusInflicted.erase(statusInflicted.begin()+i);
 }
 
 void Character::draw(sf::RenderWindow *window)const{

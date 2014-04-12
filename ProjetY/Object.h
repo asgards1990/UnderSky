@@ -7,7 +7,7 @@
 
 class Character;
 class Still;
-class Camera;
+class Room;
 
 /*
 mother class of all objects in the game that can possibly collide with each other, being the player, a static object or an opponent
@@ -42,6 +42,8 @@ public:
 	bool intersectRay(Point2d o, Point2d d) const;
 	unsigned int getHitboxCount() const{return hitboxes.size();}
 	const Hitbox* getHitbox(unsigned int i) const{return hitboxes[i];}
+
+	bool loadFromFile(FILE* f, Room* r){};
 
 protected :
 	std::vector<Hitbox*> hitboxes;//all hitboxes of the object used to determine collisions

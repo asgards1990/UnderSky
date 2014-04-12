@@ -25,6 +25,15 @@
     <Filter Include="Fichiers sources\Hitboxes">
       <UniqueIdentifier>{11abe5be-0c1f-4c4b-9fec-2cf6621e941a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Status">
+      <UniqueIdentifier>{231bace7-f33a-4ebd-8f09-1e528e34ef8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Objects\Boss">
+      <UniqueIdentifier>{9747da6b-a428-49f1-b64c-bacef30f875a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Objects\Boss">
+      <UniqueIdentifier>{2932450f-8d7c-4787-9f6e-38561c0ecf42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -69,9 +78,6 @@
     <ClInclude Include="SquareHitbox.h">
       <Filter>Fichiers d%27en-tête\Hitboxes</Filter>
     </ClInclude>
-    <ClInclude Include="Status.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Peon.h">
       <Filter>Fichiers d%27en-tête\Objects</Filter>
     </ClInclude>
@@ -81,14 +87,20 @@
     <ClInclude Include="BasicButton.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="HeartOfFire.h">
-      <Filter>Fichiers d%27en-tête\Objects</Filter>
+    <ClInclude Include="Status.h">
+      <Filter>Fichiers d%27en-tête\Status</Filter>
     </ClInclude>
-    <ClInclude Include="FireSpirit.h">
-      <Filter>Fichiers d%27en-tête\Objects</Filter>
+    <ClInclude Include="CurseOfFire.h">
+      <Filter>Fichiers d%27en-tête\Status</Filter>
     </ClInclude>
     <ClInclude Include="HeartFireBall.h">
-      <Filter>Fichiers d%27en-tête\Objects</Filter>
+      <Filter>Fichiers d%27en-tête\Objects\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="FireSpirit.h">
+      <Filter>Fichiers d%27en-tête\Objects\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="HeartOfFire.h">
+      <Filter>Fichiers d%27en-tête\Objects\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -140,11 +152,14 @@
     <ClCompile Include="BasicButton.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="HeartOfFire.cpp">
-      <Filter>Fichiers sources\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="FireSpirit.cpp">
-      <Filter>Fichiers sources\Objects</Filter>
+      <Filter>Fichiers sources\Objects\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="HeartOfFire.cpp">
+      <Filter>Fichiers sources\Objects\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="HeartFireBall.cpp">
+      <Filter>Fichiers sources\Objects\Boss</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

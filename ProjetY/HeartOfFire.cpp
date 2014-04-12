@@ -3,16 +3,16 @@
 #include "Still.h"
 #include "Game.h"
 #include "Player.h"
-#include "Projectile.h"
+#include "HeartFireBall.h"
 
 HeartOfFire::HeartOfFire(Point2d c, bool right, Room* r) :
-	Character(c,4.0,1.5,0.44,3), idle(true), facingRight(right), walkingFrames(0), onGround(NULL), spriteIndex(0), room(r), heatWaveFrame(0), heatBar(0), heatSalvationCooldown(1800), fireBallCooldown(60), dodgeCooldown(0)
+	Character(c,5.0,1.5,0.5,20), idle(true), facingRight(right), walkingFrames(0), onGround(NULL), spriteIndex(0), room(r), heatWaveFrame(0), heatBar(0), heatSalvationCooldown(1800), fireBallCooldown(60), dodgeCooldown(0)
 {
 	heatWave.setPrimitiveType(sf::TrianglesFan);
-	heatWave.resize(73);
+	heatWave.resize(74);
 	heatWave[0].color=sf::Color(255,0,0,100);
 	heatWave[0].position=sf::Vector2f(c.x,c.y);
-	for(int i=1;i<73;i++){
+	for(int i=1;i<74;i++){
 		heatWave[i].color=sf::Color(255,0,0,0);
 		heatWave[i].position=sf::Vector2f(c.x+10.0*std::cos(PI*i/36.0),c.y+10.0*std::sin(PI*i/36.0));
 	}
@@ -61,12 +61,12 @@ void HeartOfFire::simulate(){
 	Point2d playerDirection = room->player->getGravCenter()-gravityCenter;
 	double playerDistance2=playerDirection.length2();
 	//heat wave radius change
-	double heatRadius=10.0*(1.0+0.1*sin(heatWaveFrame*PI/30.0));
-	for(int i=1;i<73;i++){
+	double heatRadius=10.0+2*sin(heatWaveFrame*PI/30.0);
+	for(unsigned int i=1;i<heatWave.getVertexCount();i++){
 		Point2d ray (heatWave[i].position.x-heatWave[0].position.x,heatWave[i].position.y-heatWave[0].position.y);
-		ray.normalize();
+		ray.normalized();
 		ray*=heatRadius;
-		heatWave[i].position=sf::Vector2f(ray.x,ray.y);
+		heatWave[i].position=sf::Vector2f(heatWave[0].position.x+ray.x,heatWave[0].position.y+ray.y);
 	}
 	if(heatWaveFrame==60)
 		heatWaveFrame=1;
@@ -86,7 +86,7 @@ void HeartOfFire::simulate(){
 	double smallestLength2=16.0;
 	for(unsigned int i=0;i<room->projectiles.size();i++){//what is the closest incoming projectile less than 4.0 away ?
 		Point2d projectileDirection = room->projectiles[i]->getGravCenter()-gravityCenter;
-		if((projectileDirection.length2()<smallestLength2)&&(projectileDirection.dot(room->projectiles[i]->getV())<0.0)){
+		if((projectileDirection.length2()<smallestLength2)&&(hitboxes.front()->intersectRay(room->projectiles[i]->getGravCenter(),room->projectiles[i]->getV()))){
 			closestProjectile=i;
 			smallestLength2=(gravityCenter-room->projectiles[i]->getGravCenter()).length2();
 		}
@@ -109,17 +109,17 @@ void HeartOfFire::simulate(){
 		shotDirection.normalized();
 		std::vector<std::pair<int,int> > dmg;
 		dmg.push_back(std::make_pair(3,FIRE));
-		room->projectiles.push_back(new BasicProjectile(shotOrigin,0.2,0.2,shotDirection*15.0,0,dmg,500.0));//shoot !
+		room->projectiles.push_back(new HeartFireBall(shotOrigin,shotDirection*10,room->player));//shoot !
 		fireBallCooldown=45+rand()%31;//random cooldown
 	}else if(onGround){
 		if(closestProjectile!=-1){
-			if(closestProjectileDirection.normalize().y>std::cos(PI/3.0)){//a projectile is coming from above, dodge right or left
+			if(closestProjectileDirection.normalize().y<-std::cos(PI/3.0)){//a projectile is coming from above, dodge right or left
 				if(dodgeCooldown==0){
 					if(closestProjectileDirection.x>0.0){
-						force.x+=100.0;
+						force.x-=4000.0;
 						facingRight=false;
 					}else{
-						force.x-=100.0;
+						force.x+=4000.0;
 						facingRight=true;
 					}
 					dodgeCooldown=20;
@@ -152,4 +152,39 @@ void HeartOfFire::displace(Point2d v){
 void HeartOfFire::draw(sf::RenderWindow* window)const{
 	Character::draw(window);
 	window->draw(heatWave);
+}
+
+bool HeartOfFire::loadFromFile(FILE* f, Room* r){
+	if (f == NULL)
+		return false;
+
+	Point2d position;
+	
+	//have a temporary buffer used to read the file line by line...
+	char buffer[1000];
+	//this is where it happens.
+	while (!feof(f)){
+		//get a line from the file...
+		Game::readValidLine(buffer, f, sizeof(buffer));
+		char *line = Game::lTrim(buffer);
+
+		int lineType = Game::getTypeID(line);
+		switch (lineType) {
+			case POSITION:
+				if (sscanf(line, "%lf %lf", &position.x, &position.y) != 2)
+					return false;
+				break;
+			case FACING_RIGHT:
+				if (sscanf(line, "%d", &facingRight) != 1)
+					return false;
+				break;
+			case END:
+				room=r;
+				displace(position);
+				return true;
+			default:
+				return false;
+		}
+	}
+	return false;
 }
