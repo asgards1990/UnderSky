@@ -1,4 +1,4 @@
-Room Bounding Box -7 -2 51 8
+Room Bounding Box -7 -2 50 8
 
 Still
 	Square Hitbox -5 -1 50 0
@@ -44,18 +44,9 @@ Still
 	Tile Scale 0.01
 End
 
-Still
-	Square Hitbox 50 0 51 5
-	Texture Path resources/images/TileSet.png
-	Tile Dimension 100 100
-	Tileset Dimension 1 5
-	Tile Indices 1 1 1 1 1
-	Tile Rotations 0 0 0 0 0
-	Tile Origin 50 0
-	Tile Scale 0.01
-End
-
-Heart Of Fire
-	Position -2 3
-	Facing Right 1
-End
+Passive Exit
+	Square Hitbox 49 0 50 5
+	Room Path resources/rooms/TestDoor2.room
+	Position -4.5 2.5
+	Horizontal 1
+End 

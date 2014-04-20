@@ -7,6 +7,13 @@ class Player;
 class Still;
 class Character;
 
+struct Exit{
+	SquareHitbox door;
+	char nextRoom [200];
+	Point2d positionInNewRoom;
+	bool horizontal;
+};
+
 class Room{
 public :
 	Room();
@@ -19,6 +26,8 @@ public :
 	std::vector<Character*> projectiles;
 	Player* player;
 	SquareHitbox boundingBox;
-	std::vector<std::pair<SquareHitbox*,char*> > passiveExits;//hitbox of exits and path to the file describing the associated room
-	std::vector<std::pair<SquareHitbox*,char*> > activeExits;//exits requiring to push a button
+	std::vector<Exit> passiveExits;//hitbox of exits and path to the file describing the associated room
+	std::vector<Exit> activeExits;//exits requiring to push a button
+
+	bool loadExitFromFile(FILE* f, Exit &e);
 };

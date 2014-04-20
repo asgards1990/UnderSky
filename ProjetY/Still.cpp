@@ -57,8 +57,6 @@ bool Still::loadFromFile(FILE* f, Room* r){
 	Point2d origin;
 	double scale = 1.0;
 
-	int size, offset, currentOffset;
-
 	//have a temporary buffer used to read the file line by line...
 	char buffer[1000];
 	//this is where it happens.

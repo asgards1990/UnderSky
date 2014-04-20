@@ -32,7 +32,11 @@ const Type Game::typeList[] = {
 	{"Tile Rotations",TILE_ROTATIONS},
 	{"Tileset Dimension",TILESET_DIMENSION},
 	{"Tile Origin",TILE_ORIGIN},
-	{"Tile Scale", TILE_SCALE}
+	{"Tile Scale",TILE_SCALE},
+	{"Active Exit",ACTIVE_EXIT},
+	{"Passive Exit",PASSIVE_EXIT},
+	{"Room Path",ROOM_PATH},
+	{"Horizontal",HORIZONTAL}
 };
 
 Game::Game() :
@@ -97,12 +101,44 @@ void Game::resolveCollisions(){
 		room.player->resolveCollision(room.projectiles[i]);
 	}
 
+	for(unsigned int i=0;i<room.passiveExits.size();i++){
+		if(room.passiveExits[i].door.isInside(room.player->getGravCenter())){
+			Point2d d=room.player->getGravCenter()-room.passiveExits[i].door.getCenter();
+			if(room.passiveExits[i].horizontal){
+				if(d.x>0)
+					d.x=-room.passiveExits[i].door.getWidth()*0.51;
+				else
+					d.x=room.passiveExits[i].door.getWidth()*0.51;
+			}else{
+				if(d.y>0)
+					d.y=-room.passiveExits[i].door.getHeight()*0.51;
+				else
+					d.y=room.passiveExits[i].door.getHeight()*0.51;
+			}
+			room.player->displace(room.passiveExits[i].positionInNewRoom-room.player->getGravCenter()+d);
+			loadRoom(room.passiveExits[i].nextRoom);
+			return ;
+		}
+	}
 }
 
 void Game::draw(){
 	mainWindow.clear(sf::Color(112,112,255,555));
 	if(currentGameState==GAME_RUNNING){
-		view.setCenter(room.player->getGravCenter().x,room.player->getGravCenter().y);
+		Point2d viewCenter;
+		if(room.player->getGravCenter().x-0.5*view.getSize().x<room.boundingBox.min.x)
+			viewCenter.x=room.boundingBox.min.x+0.5*view.getSize().x;
+		else if(room.player->getGravCenter().x+0.5*view.getSize().x>room.boundingBox.max.x)
+			viewCenter.x=room.boundingBox.max.x-0.5*view.getSize().x;
+		else
+			viewCenter.x=room.player->getGravCenter().x;
+		if(room.player->getGravCenter().y-0.5*view.getSize().y<room.boundingBox.min.y)
+			viewCenter.y=room.boundingBox.min.y+0.5*view.getSize().y;
+		else if(room.player->getGravCenter().y+0.5*view.getSize().y>room.boundingBox.max.y)
+			viewCenter.y=room.boundingBox.max.y-0.5*view.getSize().y;
+		else
+			viewCenter.y=room.player->getGravCenter().y;			
+		view.setCenter(viewCenter.x,viewCenter.y);
 		mainWindow.setView(view);
 		for(unsigned int i=0;i<room.fiends.size();i++){
 			room.fiends[i]->draw(&mainWindow);
@@ -181,7 +217,7 @@ void Game::launch(){
 		endOfFrame();
 		if(currentGameState==TITLE_SCREEN){
 			if(buttons[0]->isLeftClickedOn(&mainWindow)){
-				loadRoom("resources/rooms/testRoom.room");
+				loadRoom("resources/rooms/testDoor1.room");
 				currentGameState=GAME_RUNNING;
 				for(unsigned int i=0;i<buttons.size();i++)
 					delete buttons[i];
@@ -287,6 +323,22 @@ bool Game::loadRoom(const char* path){
 						fclose(f);
 						return false;
 					}
+				}break;
+			case PASSIVE_EXIT:{
+					Exit exit;
+					if (!room.loadExitFromFile(f,exit)){
+						fclose(f);
+						return false;
+					}
+					room.passiveExits.push_back(exit);
+				}break;
+			case ACTIVE_EXIT:{
+					Exit exit;
+					if (!room.loadExitFromFile(f,exit)){
+						fclose(f);
+						return false;
+					}
+					room.activeExits.push_back(exit);
 				}break;
 			case STILL:{
 					Still* still = new Still();

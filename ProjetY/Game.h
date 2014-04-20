@@ -8,10 +8,10 @@
 
 class Button;
 
-typedef struct word{
+struct Type{
 	char* keyword;
 	int ID;
-}Type;
+};
 
 class Game{
 public :
@@ -116,6 +116,8 @@ enum KEYWORDS{
 	TILE_ROTATIONS,
 	TILESET_DIMENSION,
 	TILE_ORIGIN,
-	TILE_SCALE
+	TILE_SCALE,
+	ROOM_PATH,
+	HORIZONTAL
 };
 

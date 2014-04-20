@@ -112,6 +112,18 @@ void SquareHitbox::setPosition(Point2d x){
 	displace(x-(min+max)*0.5);
 }
 
+Point2d SquareHitbox::getCenter(){
+	return (min+max)*0.5;
+}
+
+double SquareHitbox::getWidth(){
+	return (max.x-min.x);
+}
+
+double SquareHitbox::getHeight(){
+	return (max.y-min.y);
+}
+
 void SquareHitbox::draw(sf::RenderWindow* window,sf::Color color) const{
 	sf::RectangleShape rect (sf::Vector2f(max.x-min.x,max.y-min.y));
 	rect.setFillColor(color);

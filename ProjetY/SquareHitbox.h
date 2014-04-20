@@ -20,6 +20,11 @@ public:
 	void draw(sf::RenderWindow* window,sf::Color color) const;
 
 	void include(Point2d p);
+
+	Point2d getCenter();
+	double getWidth();
+	double getHeight();
+
 	Point2d min, max;
 };
 
